@@ -1,0 +1,9 @@
+.idea/
+.vs/
+*.user
+/local
+
+bin/
+obj/
+
+manifestation/

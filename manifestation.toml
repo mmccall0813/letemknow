@@ -1,0 +1,16 @@
+id = "macrottie.letemknow"
+name = "Let Em Know"
+description = "Shows what song you're listening to under your title. Reads from either Cider2 RPC or Last.FM"
+version = "1.0.0"
+homepage = "https://github.com/mmccall0813/letemknow"
+author = "macrottie"
+
+icon = "icon.png"
+readme = "README.md"
+
+[project]
+csharp = "./macrottie.letemknow/macrottie.letemknow.csproj"
+godot = "./project/project.godot"
+
+[[dependencies]]
+thunderstore_version = "NotNet-GDWeave-2.0.14"

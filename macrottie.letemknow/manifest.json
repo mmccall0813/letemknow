@@ -1,0 +1,11 @@
+{
+  "Id": "macrottie.letemknow",
+  "AssemblyPath": "macrottie.letemknow.dll",
+  "PackPath": "macrottie.letemknow.pck",
+  "Metadata": {
+    "Name": "Let Em Know",
+    "Author": "macrottie",
+    "Version": "1.0.0",
+    "Description": "Show what song you're listening to under your title!"
+  }
+}
