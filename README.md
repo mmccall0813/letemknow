@@ -22,4 +22,6 @@ Then use Tacklebox (recommended) or edit your config file manually to set these 
 - LastFm Username: (your lastfm username)
 - LastFm API Key: (a valid lastfm api key)
 
+Restart your game after saving your options.
+
 Dont have an API Key? Get one at https://www.last.fm/api/account/create
