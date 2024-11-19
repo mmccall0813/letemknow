@@ -2,7 +2,7 @@
 
 A client-side mod that shows what song you're currently listening to under your title.
 
-![Preview Screenshot](screenshot.png "Example Screenshot")
+![Preview Screenshot](https://github.com/mmccall0813/letemknow/blob/main/screenshot.png?raw=true "Example Screenshot")
 
 Note: only players who have the mod can see your status. sorry :(
 
