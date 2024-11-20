@@ -30,9 +30,10 @@ public class PlayerPatcher : IScriptMod
         ]);
 
         var customValidActionsWaiter = new MultiTokenWaiter([
-            t => t.Type is TokenType.Comma,
+            t => t is IdentifierToken {Name: "custom_valid_actions"},
+            t => t.Type is TokenType.OpAssign,
+            t => t.Type is TokenType.BracketOpen,
             t => t.Type is TokenType.Newline,
-            t => t is ConstantToken { Value: StringVariant { Value: "_sync_punch" } }
         ]);
 
         foreach (var token in tokens)
@@ -61,9 +62,9 @@ public class PlayerPatcher : IScriptMod
             {
                 yield return token;
                 
+                yield return new ConstantToken(new StringVariant("_update_nowplaying"));
                 yield return new Token(TokenType.Comma);
                 yield return new Token(TokenType.Newline, 2);
-                yield return new ConstantToken(new StringVariant("_update_nowplaying"));
             } else if (titleAssignWaiter.Check(token))
             {
                 yield return token;
@@ -126,7 +127,7 @@ public class PlayerPatcher : IScriptMod
                 yield return new Token(TokenType.Newline, 1);
                 yield return new Token(TokenType.BuiltInFunc, (uint?) BuiltinFunction.TextPrint);
                 yield return new Token(TokenType.ParenthesisOpen);
-                yield return new ConstantToken(new StringVariant("RECEIVED SONG UPDATE PACKET"));
+                yield return new ConstantToken(new StringVariant("SONG UPDATE FUNCTION CALL"));
                 yield return new Token(TokenType.ParenthesisClose);
                 yield return new Token(TokenType.Newline);
                 
