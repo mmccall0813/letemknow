@@ -8,8 +8,7 @@ public class Mod : IMod {
 
     public Mod(IModInterface modInterface) {
         this.Config = modInterface.ReadConfig<Config>();
-        modInterface.Logger.Information("Hello, world!");
-        modInterface.RegisterScriptMod(new PlayerPatcher());
+        
         modInterface.RegisterScriptMod(new NetworkPatcher());
         modInterface.RegisterScriptMod(new TitlePatcher());
     }

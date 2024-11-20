@@ -3,12 +3,11 @@ extends Node
 var api_url = "http://localhost:10767/api/v1/playback/"
 
 onready var _status = preload("res://mods/macrottie.letemknow/Scenes/StatusFinder/statusfinder.tscn").instance()
-var _local_player_id = -1
 
 const ID = "macrottie.letemknow"
 const ModVersion = "1.0.0"
 func _ready():
-	Network.connect("_instance_actor", self, "_instance_actor")
+	Network.connect("_new_player_join", self, "_new_player_join")
 	
 	self.add_child(_status)
 	
@@ -16,40 +15,32 @@ func _ready():
 	
 	_check_options()
 
-func _instance_actor(dict, sender = -1):
-	if dict.creator_id == Network.STEAM_ID && dict.actor_type == "player":
-		_local_player_id = dict.actor_id
-		print(dict.actor_id, " should be our local player id...")
+func _new_player_join(id):
+	Network._send_P2P_Packet({"type": "update_song", "song": _status.song, "artist": _status.artist}, id)
 
 func _send_status_change():
-	print(_status.song)
-	print(_status.artist)
-	if Network.STEAM_LOBBY_ID > 0 && _local_player_id != -1:
-		print("sending out packet")
+	if Network.STEAM_LOBBY_ID > 0:
+		print("sending out update song packet")
 		Network._send_P2P_Packet({"type": "update_song", "song": _status.song, "artist": _status.artist})
-		#for actor in get_tree().get_nodes_in_group("actor"):
-		#	if actor.actor_id == _local_player_id:
-		#		actor._update_nowplaying(_status.song, _status.artist)
 
 # borrowed (tm) from Lure :3
 func _check_options():
 	var file = File.new()
-	print("letemknow searching for gdweave options json")
 	if file.open(_get_gdweave_dir().plus_file("/configs/macrottie.letemknow.json"),File.READ) == OK:
 		var p = JSON.parse(file.get_as_text())
 		file.close()
 		var result = p.result
 		if typeof(result) == TYPE_DICTIONARY:
-			print("options found...")
+			print("letemknow: options found...")
 			_status.lastfm = result.UseLastFm
 			_status.fm_user = result.LastFmUsername
 			_status.fm_api_key = result.LastFmApikey
 			_status.startTimer()
 		else:
-			print("error reading options... falling back to cider...")
+			print("letemknow: error reading options... falling back to cider...")
 			_status.startTimer()
 	else:
-		print("couldnt find options... falling back to cider...")
+		print("letemknow: couldnt find options... falling back to cider...")
 		_status.startTimer()
 
 # borrowed (tm) from TackleBox

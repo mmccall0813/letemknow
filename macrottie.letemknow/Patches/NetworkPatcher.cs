@@ -40,6 +40,7 @@ public class NetworkPatcher : IScriptMod
                 yield return new ConstantToken(new StringVariant("update_song"));
                 yield return new Token(TokenType.Colon);
                 yield return new Token(TokenType.Newline, 4);
+                
                 yield return new Token(TokenType.BuiltInFunc, (uint?) BuiltinFunction.TextPrint);
                 yield return new Token(TokenType.ParenthesisOpen);
                 yield return new ConstantToken(new StringVariant("RECEIVED SONG UPDATE PACKET FROM "));
@@ -47,6 +48,7 @@ public class NetworkPatcher : IScriptMod
                 yield return new IdentifierToken("PACKET_SENDER");
                 yield return new Token(TokenType.ParenthesisClose);
                 yield return new Token(TokenType.Newline, 4);
+                
                 yield return new Token(TokenType.CfIf);
                 yield return new Token(TokenType.OpNot);
                 yield return new IdentifierToken("_validate_packet_information");
@@ -68,6 +70,7 @@ public class NetworkPatcher : IScriptMod
                 yield return new Token(TokenType.Colon);
                 yield return new Token(TokenType.CfReturn);
                 yield return new Token(TokenType.Newline, 4);
+                
                 yield return new Token(TokenType.CfFor);
                 yield return new IdentifierToken("actor");
                 yield return new Token(TokenType.OpIn);
@@ -81,25 +84,7 @@ public class NetworkPatcher : IScriptMod
                 yield return new Token(TokenType.ParenthesisClose);
                 yield return new Token(TokenType.Colon);
                 yield return new Token(TokenType.Newline, 5);
-
-                yield return new Token(TokenType.CfIf);
-                yield return new IdentifierToken("actor");
-                yield return new Token(TokenType.Period);
-                yield return new IdentifierToken("actor_type");
-                yield return new Token(TokenType.OpEqual);
-                yield return new ConstantToken(new StringVariant("player"));
-                yield return new Token(TokenType.Colon);
                 
-                yield return new Token(TokenType.BuiltInFunc, (uint?) BuiltinFunction.TextPrint);
-                yield return new Token(TokenType.ParenthesisOpen);
-                yield return new IdentifierToken("actor");
-                yield return new Token(TokenType.Period);
-                yield return new IdentifierToken("owner_id");
-                yield return new Token(TokenType.Comma);
-                yield return new ConstantToken(new StringVariant(" OWNS A PLAYER ACTOR"));
-                yield return new Token(TokenType.ParenthesisClose);
-                
-                yield return new Token(TokenType.Newline, 5);
                 yield return new Token(TokenType.CfIf);
                 yield return new IdentifierToken("actor");
                 yield return new Token(TokenType.Period);
@@ -114,9 +99,8 @@ public class NetworkPatcher : IScriptMod
                 yield return new IdentifierToken("PACKET_SENDER");
                 yield return new Token(TokenType.Colon);
                 yield return new Token(TokenType.Newline, 6);
-                
-                yield return new Token(TokenType.Newline, 6);
 
+                // ID_SONG_MAP[PACKET_SENDER] = ""
                 yield return new IdentifierToken("ID_SONG_MAP");
                 yield return new Token(TokenType.BracketOpen);
                 yield return new IdentifierToken("PACKET_SENDER");
@@ -124,6 +108,8 @@ public class NetworkPatcher : IScriptMod
                 yield return new Token(TokenType.OpAssign);
                 yield return new ConstantToken(new StringVariant(""));
                 yield return new Token(TokenType.Newline, 6);
+                
+                // if DATA.song != "": 
                 yield return new Token(TokenType.CfIf);
                 yield return new IdentifierToken("DATA");
                 yield return new Token(TokenType.Period);
@@ -132,6 +118,7 @@ public class NetworkPatcher : IScriptMod
                 yield return new ConstantToken(new StringVariant(""));
                 yield return new Token(TokenType.Colon);
                 
+                // ID_SONG_MAP[PACKET_SENDER] = "\n" + DATA.song + " - " + DATA.artist
                 yield return new IdentifierToken("ID_SONG_MAP");
                 yield return new Token(TokenType.BracketOpen);
                 yield return new IdentifierToken("PACKET_SENDER");
