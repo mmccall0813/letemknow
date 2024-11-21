@@ -11,16 +11,10 @@ public class TitlePatcher : IScriptMod
     public IEnumerable<Token> Modify(string path, IEnumerable<Token> tokens)
     {
         var titleUpdateWaiter = new MultiTokenWaiter([
-            t => t is IdentifierToken { Name: "_name" },
-            t => t.Type is TokenType.OpAssign,
-            t => t is IdentifierToken { Name: "_name" },
-            t => t.Type is TokenType.Period,
-            t => t.Type is TokenType.Identifier,
+            t => t is IdentifierToken { Name: "_update_title" },
             t => t.Type is TokenType.ParenthesisOpen,
-            t => t.Type is TokenType.Constant,
-            t => t.Type is TokenType.Comma,
-            t => t.Type is TokenType.Constant,
             t => t.Type is TokenType.ParenthesisClose,
+            t => t.Type is TokenType.Colon,
             t => t.Type is TokenType.Newline
         ]);
         var beginningWaiter = new MultiTokenWaiter([
@@ -50,28 +44,27 @@ public class TitlePatcher : IScriptMod
                 yield return new IdentifierToken("Network");
                 yield return new Token(TokenType.Period);
                 yield return new IdentifierToken("ID_SONG_MAP");
-                yield return new Token(TokenType.OpAnd);
-                yield return new IdentifierToken("current_song");
-                yield return new Token(TokenType.OpNotEqual);
-                yield return new IdentifierToken("Network");
-                yield return new Token(TokenType.Period);
-                yield return new IdentifierToken("ID_SONG_MAP");
-                yield return new Token(TokenType.BracketOpen);
-                yield return new IdentifierToken("player_id");
-                yield return new Token(TokenType.BracketClose);
                 yield return new Token(TokenType.Colon);
                 yield return new Token(TokenType.Newline, 2);
-                
-                yield return new IdentifierToken("title");
-                yield return new Token(TokenType.OpAssignAdd);
-                yield return new IdentifierToken("Network");
-                yield return new Token(TokenType.Period);
-                yield return new IdentifierToken("ID_SONG_MAP");
-                yield return new Token(TokenType.BracketOpen);
-                yield return new IdentifierToken("player_id");
-                yield return new Token(TokenType.BracketClose);
-                yield return new Token(TokenType.Newline, 2);
 
+                yield return new IdentifierToken("title");
+
+                yield return new Token(TokenType.OpAssign);
+                
+                // janky, but avoids a Lure conflict.
+                yield return new Token(TokenType.Self);
+                yield return new Token(TokenType.BracketOpen);
+                yield return new ConstantToken(new StringVariant("title"));
+                yield return new Token(TokenType.BracketClose);
+                yield return new Token(TokenType.Period);
+                yield return new IdentifierToken("replace");
+                yield return new Token(TokenType.ParenthesisOpen);
+                yield return new IdentifierToken("current_song");
+                yield return new Token(TokenType.Comma);
+                yield return new ConstantToken(new StringVariant(""));
+                yield return new Token(TokenType.ParenthesisClose);
+                
+                yield return new Token(TokenType.Newline, 2);
                 yield return new IdentifierToken("current_song");
                 yield return new Token(TokenType.OpAssign);
                 yield return new IdentifierToken("Network");
@@ -80,6 +73,12 @@ public class TitlePatcher : IScriptMod
                 yield return new Token(TokenType.BracketOpen);
                 yield return new IdentifierToken("player_id");
                 yield return new Token(TokenType.BracketClose);
+                
+                yield return new Token(TokenType.Newline, 2);
+                yield return new IdentifierToken("title");
+                yield return new Token(TokenType.OpAssignAdd);
+                yield return new IdentifierToken("current_song");
+
 
                 yield return new Token(TokenType.Newline, 1);
             }

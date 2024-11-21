@@ -1,7 +1,7 @@
 id = "macrottie.letemknow"
 name = "LetEmKnow"
 description = "Shows what song you're listening to under your title. Reads from either Cider2 RPC or Last.FM"
-version = "1.0.2"
+version = "1.0.3"
 homepage = "https://github.com/mmccall0813/letemknow"
 author = "macrottie"
 

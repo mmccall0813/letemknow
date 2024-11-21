@@ -139,11 +139,10 @@ public class NetworkPatcher : IScriptMod
                 yield return new Token(TokenType.Newline, 6);
                 yield return new IdentifierToken("actor");
                 yield return new Token(TokenType.Period);
-                yield return new IdentifierToken("_update_cosmetics");
-                yield return new Token(TokenType.ParenthesisOpen);
-                yield return new IdentifierToken("actor");
+                yield return new IdentifierToken("title");
                 yield return new Token(TokenType.Period);
-                yield return new IdentifierToken("cosmetic_data");
+                yield return new IdentifierToken("_update_title");
+                yield return new Token(TokenType.ParenthesisOpen);
                 yield return new Token(TokenType.ParenthesisClose);
 
                 yield return new Token(TokenType.Newline, 3);
