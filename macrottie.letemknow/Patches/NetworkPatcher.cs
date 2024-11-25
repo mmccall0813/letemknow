@@ -37,6 +37,7 @@ public class NetworkPatcher : IScriptMod
             {
                 yield return token;
                 yield return new Token(TokenType.Newline, 3);
+                yield return new Token(TokenType.Newline, 3);
                 yield return new ConstantToken(new StringVariant("update_song"));
                 yield return new Token(TokenType.Colon);
                 yield return new Token(TokenType.Newline, 4);
