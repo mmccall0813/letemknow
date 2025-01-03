@@ -11,10 +11,10 @@ public class NetworkPatcher : IScriptMod
     public IEnumerable<Token> Modify(string path, IEnumerable<Token> tokens)
     {
         var packetParserWaiter = new MultiTokenWaiter([
-            t => t is Token { Type: TokenType.Newline, AssociatedData: 2},
             t => t.Type is TokenType.CfMatch,
             t => t is IdentifierToken { Name: "type" },
-            t => t.Type is TokenType.Colon
+            t => t.Type is TokenType.Colon,
+            t => t is Token {Type: TokenType.Newline, AssociatedData: 3}
         ]);
         var beginningWaiter = new MultiTokenWaiter([
             t => t.Type is TokenType.PrExtends,

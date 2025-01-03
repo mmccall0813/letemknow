@@ -5,7 +5,7 @@ var api_url = "http://localhost:10767/api/v1/playback/"
 onready var _status = preload("res://mods/macrottie.letemknow/Scenes/StatusFinder/statusfinder.tscn").instance()
 
 const ID = "macrottie.letemknow"
-const ModVersion = "1.0.0"
+const ModVersion = "1.1.0"
 func _ready():
 	Network.connect("_new_player_join", self, "_new_player_join")
 	
@@ -16,12 +16,20 @@ func _ready():
 	_check_options()
 
 func _new_player_join(id):
-	Network._send_P2P_Packet({"type": "update_song", "song": _status.song, "artist": _status.artist}, id)
+	Network._send_P2P_Packet({"type": "update_song", "song": _status.song, "artist": _status.artist}, id, 2, Network.CHANNELS.GAME_STATE)
 
 func _send_status_change():
+	if _status.song != "" and _status.artist != "": 
+		Network.ID_SONG_MAP[Network.STEAM_ID] = "\n"  + _status.song + " - " + _status.artist
+	else:
+		Network.ID_SONG_MAP[Network.STEAM_ID] = ""
+	var local_player = get_tree().get_nodes_in_group("controlled_player")
+
+	if local_player.size() > 0: local_player[0].title._update_title()
+
 	if Network.STEAM_LOBBY_ID > 0:
 		print("sending out update song packet")
-		Network._send_P2P_Packet({"type": "update_song", "song": _status.song, "artist": _status.artist})
+		Network._send_P2P_Packet({"type": "update_song", "song": _status.song, "artist": _status.artist}, "all", 2, Network.CHANNELS.GAME_STATE)
 
 # borrowed (tm) from Lure :3
 func _check_options():
